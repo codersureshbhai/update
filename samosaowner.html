@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Owner Panel – Samosa Dukan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --saffron: #FF6B00; --gold: #FFAA00; --green: #22C55E; --red: #EF4444;
+      --bg: #1A0F00; --card: #261608; --surface: #321C0A; --border: #4A2C0E;
+      --text: #FFF0DC; --muted: #B07A40;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { min-height: 100vh; background: var(--bg); font-family: 'Nunito', sans-serif; display: flex; align-items: center; justify-content: center; padding: 24px; background-image: radial-gradient(circle at 80% 10%, rgba(255,107,0,0.08) 0%, transparent 50%), radial-gradient(circle at 20% 90%, rgba(255,170,0,0.05) 0%, transparent 40%); }
+    .wrapper { width: 100%; max-width: 440px; }
+    .header { text-align: center; margin-bottom: 28px; }
+    .header-icon { font-size: 48px; display: block; }
+    .header-title { font-family: 'Baloo 2', cursive; font-size: 28px; font-weight: 800; color: var(--gold); margin-top: 6px; }
+    .header-sub { font-size: 12px; color: var(--muted); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+    .owner-badge { display: inline-block; background: rgba(255,107,0,0.15); border: 1px solid rgba(255,107,0,0.3); border-radius: 100px; padding: 3px 12px; font-size: 11px; font-weight: 700; color: var(--saffron); letter-spacing: 1px; margin-top: 8px; }
+    .card { background: var(--card); border-radius: 24px; border: 1.5px solid var(--border); padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--saffron), var(--gold), var(--saffron)); background-size: 200%; animation: shimmer 2s linear infinite; }
+    @keyframes shimmer { to { background-position: 200% center; } }
+    .status-display { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 20px; border: 1px solid var(--border); }
+    .status-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 700; font-family: 'Baloo 2', cursive; }
+    .status-pill.green { background: rgba(34,197,94,0.15); color: #4ADE80; border: 1px solid rgba(34,197,94,0.3); }
+    .status-pill.red { background: rgba(239,68,68,0.15); color: #F87171; border: 1px solid rgba(239,68,68,0.3); }
+    .pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .green .pill-dot { background: var(--green); }
+    .red .pill-dot { background: var(--red); }
+    .last-time { font-size: 11px; color: var(--muted); margin-top: 10px; font-weight: 600; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); font-weight: 700; margin-bottom: 12px; }
+    .control-block { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+    .control-label { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+    .control-label span { font-size: 20px; }
+    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn { padding: 12px 10px; border-radius: 12px; border: 2px solid transparent; font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+    .btn:active { transform: scale(0.96); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .btn-on { background: rgba(34,197,94,0.15); color: #4ADE80; border-color: rgba(34,197,94,0.3); }
+    .btn-on:hover:not(:disabled) { background: rgba(34,197,94,0.25); border-color: rgba(34,197,94,0.6); }
+    .btn-on.active { background: var(--green); color: #fff; border-color: var(--green); box-shadow: 0 4px 16px rgba(34,197,94,0.35); }
+    .btn-off { background: rgba(239,68,68,0.12); color: #F87171; border-color: rgba(239,68,68,0.25); }
+    .btn-off:hover:not(:disabled) { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+    .btn-off.active { background: var(--red); color: #fff; border-color: var(--red); box-shadow: 0 4px 16px rgba(239,68,68,0.35); }
+    #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); padding: 12px 24px; border-radius: 100px; font-size: 14px; font-weight: 700; box-shadow: 0 8px 32px rgba(0,0,0,0.5); transition: transform 0.3s ease; z-index: 999; white-space: nowrap; }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.success { background: var(--green); color: #fff; }
+    #toast.error { background: var(--red); color: #fff; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <span class="header-icon">⚙️</span>
+      <div class="header-title">Owner Panel</div>
+      <div class="header-sub">Samosa Dukan</div>
+      <div class="owner-badge">🔐 ADMIN ONLY</div>
+    </div>
+    <div class="card">
+      <div class="section-title">Current Status</div>
+      <div class="status-display">
+        <div class="status-pills" id="currentStatus">
+          <span style="color:var(--muted);font-size:13px">Loading...</span>
+        </div>
+        <div class="last-time" id="lastTime"></div>
+      </div>
+      <hr class="divider"/>
+      <div class="section-title">Controls</div>
+      <div class="control-block">
+        <div class="control-label"><span>🏪</span> Shop Status</div>
+        <div class="btn-group">
+          <button class="btn btn-on"  id="shopOnBtn"  onclick="updateShop('ON')">✓ OPEN</button>
+          <button class="btn btn-off" id="shopOffBtn" onclick="updateShop('OFF')">✕ CLOSE</button>
+        </div>
+      </div>
+      <div class="control-block">
+        <div class="control-label"><span>🥟</span> Samosa Ready</div>
+        <div class="btn-group">
+          <button class="btn btn-on"  id="samosaYesBtn" onclick="updateSamosa('YES')">✓ READY</button>
+          <button class="btn btn-off" id="samosaNoBtn"  onclick="updateSamosa('NO')">✕ NOT YET</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="toast"></div>
+  <script>
+    // ✅ YOUR URL — already set!
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwp_0_NmO0T7wszcjdIwPKVuAYxvbsSEOO_fltqVq-0CDuhaqSDBNU_nZh2WVeHPjT9PA/exec";
+
+    let currentData = { shopStatus: 'OFF', samosaReady: 'NO' };
+    let isUpdating = false;
+
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = 'show ' + type;
+      setTimeout(() => { t.className = ''; }, 3000);
+    }
+
+    function formatTime(raw) {
+      if (!raw) return "";
+      const d = new Date(raw);
+      if (isNaN(d)) return raw;
+      return d.toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', hour12:true });
+    }
+
+    function renderStatus(data) {
+      currentData = data;
+      const shopOn    = (data.shopStatus  || "").toUpperCase() === "ON";
+      const samosaYes = (data.samosaReady || "").toUpperCase() === "YES";
+      document.getElementById('currentStatus').innerHTML =
+        '<span class="status-pill ' + (shopOn ? 'green' : 'red') + '"><span class="pill-dot"></span> Shop: ' + (shopOn ? 'OPEN' : 'CLOSED') + '</span>' +
+        '<span class="status-pill ' + (samosaYes ? 'green' : 'red') + '"><span class="pill-dot"></span> Samosa: ' + (samosaYes ? 'READY' : 'NOT YET') + '</span>';
+      document.getElementById('lastTime').textContent = data.lastUpdated ? 'Last updated: ' + formatTime(data.lastUpdated) : '';
+      document.getElementById('shopOnBtn').classList.toggle('active', shopOn);
+      document.getElementById('shopOffBtn').classList.toggle('active', !shopOn);
+      document.getElementById('samosaYesBtn').classList.toggle('active', samosaYes);
+      document.getElementById('samosaNoBtn').classList.toggle('active', !samosaYes);
+    }
+
+    async function loadData() {
+      try {
+        const res = await fetch(APPS_SCRIPT_URL + '?action=getData');
+        const data = await res.json();
+        renderStatus(data);
+      } catch (e) {
+        document.getElementById('currentStatus').innerHTML = '<span style="color:#F87171;font-size:13px">Failed to load.</span>';
+      }
+    }
+
+    function setAllButtons(disabled) {
+      ['shopOnBtn','shopOffBtn','samosaYesBtn','samosaNoBtn'].forEach(id => {
+        document.getElementById(id).disabled = disabled;
+      });
+    }
+
+    // ✅ GET method use kar rahe hain — CORS problem nahi aayegi
+    async function sendUpdate(shopStatus, samosaReady) {
+      const url = APPS_SCRIPT_URL + '?action=updateData&shopStatus=' + shopStatus + '&samosaReady=' + samosaReady;
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    async function updateShop(value) {
+      if (isUpdating) return;
+      isUpdating = true;
+      setAllButtons(true);
+      try {
+        const data = await sendUpdate(value, currentData.samosaReady || 'NO');
+        renderStatus(data);
+        showToast('Shop is now ' + value, 'success');
+      } catch (e) {
+        showToast('Update failed. Try again.', 'error');
+      }
+      isUpdating = false;
+      setAllButtons(false);
+    }
+
+    async function updateSamosa(value) {
+      if (isUpdating) return;
+      isUpdating = true;
+      setAllButtons(true);
+      try {
+        const data = await sendUpdate(currentData.shopStatus || 'OFF', value);
+        renderStatus(data);
+        showToast('Samosa: ' + value, 'success');
+      } catch (e) {
+        showToast('Update failed. Try again.', 'error');
+      }
+      isUpdating = false;
+      setAllButtons(false);
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

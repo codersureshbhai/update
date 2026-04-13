@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Samosa Dukan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --saffron:   #FF6B00;
+      --gold:      #FFAA00;
+      --green:     #22C55E;
+      --red:       #EF4444;
+      --bg:        #3B3BD6;
+      --card:      #FFFFFF;
+      --text:      #1C1108;
+      --muted:     #92714A;
+      --border:    #FFE0B2;
+      --shadow:    rgba(255,107,0,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a2e;
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg);
+      border-radius: 28px;
+      padding: 28px 24px;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,170,0,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(255,107,0,0.10) 0%, transparent 50%);
+    }
+
+    /* ---- HEADER ---- */
+    .shop-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .shop-emoji {
+      font-size: 64px;
+      line-height: 1;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    .shop-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--saffron);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .shop-tagline {
+      font-size: 13px;
+      color: #C8B8FF;
+      margin-top: 4px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    /* ---- CARD ---- */
+    .card {
+      background: var(--card);
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      padding: 28px 24px;
+      box-shadow:
+        0 4px 0 var(--border),
+        0 12px 40px var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--saffron), var(--gold));
+    }
+
+    /* ---- STATUS ROW ---- */
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      border-bottom: 1.5px dashed var(--border);
+    }
+    .status-row:last-child { border-bottom: none; }
+
+    .status-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .status-icon {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      border: 1.5px solid var(--border);
+    }
+    .label-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .label-sub {
+      font-size: 11px;
+      color: #C8A87A;
+      font-weight: 600;
+    }
+
+    /* ---- BADGE ---- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-family: 'Baloo 2', cursive;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      transition: all 0.4s ease;
+    }
+    .badge-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(0.7); }
+    }
+    .badge.green {
+      background: #DCFCE7;
+      color: #166534;
+    }
+    .badge.green .badge-dot { background: var(--green); }
+    .badge.red {
+      background: #FEE2E2;
+      color: #991B1B;
+    }
+    .badge.red .badge-dot {
+      background: var(--red);
+      animation: none;
+    }
+
+    /* ---- TIME ---- */
+    .time-value {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      text-align: right;
+      max-width: 160px;
+    }
+    .time-value span {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ---- LOADING / ERROR ---- */
+    .loading-state {
+      text-align: center;
+      padding: 20px 0;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .loader {
+      display: inline-block;
+      width: 28px; height: 28px;
+      border: 3px solid var(--border);
+      border-top-color: var(--saffron);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 10px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 11px;
+      color: #C8B8FF;
+      font-weight: 600;
+    }
+    .refresh-btn {
+      background: none;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      color: var(--saffron);
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .refresh-btn:hover {
+      background: var(--saffron);
+      color: #fff;
+      border-color: var(--saffron);
+    }
+
+    /* ---- LIVE DOT ---- */
+    .live-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,170,0,0.15);
+      border: 1px solid rgba(255,170,0,0.4);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #FFAA00;
+      margin-top: 8px;
+      letter-spacing: 0.8px;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: #FFAA00;
+      border-radius: 50%;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="shop-header">
+      <div class="shop-emoji">🥟</div>
+      <div class="shop-name">Samosa Dukan</div>
+      <div class="shop-tagline">Fresh • Hot • Crispy</div>
+      <div class="live-pill"><div class="live-dot"></div> LIVE STATUS</div>
+    </div>
+
+    <div class="card">
+      <div id="content">
+        <div class="loading-state">
+          <div class="loader"></div>
+          <div>Fetching status...</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Auto-refreshes every 30 seconds</div>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh Now</button>
+    </div>
+  </div>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwp_0_NmO0T7wszcjdIwPKVuAYxvbsSEOO_fltqVq-0CDuhaqSDBNU_nZh2WVeHPjT9PA/exec";
+
+    function formatTime(raw) {
+      if (!raw) return { date: "—", time: "" };
+      const d = new Date(raw);
+      if (isNaN(d)) return { date: raw, time: "" };
+      const date = d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+      const time = d.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+      return { date, time };
+    }
+
+    async function loadData() {
+      const content = document.getElementById('content');
+      content.innerHTML = `<div class="loading-state"><div class="loader"></div><div>Fetching status...</div></div>`;
+      try {
+        const res = await fetch(`${APPS_SCRIPT_URL}?action=getData`);
+        const data = await res.json();
+        renderData(data);
+      } catch (e) {
+        content.innerHTML = `<div class="loading-state" style="color:#EF4444">⚠️ Could not load data.<br><small>Check your Apps Script URL.</small></div>`;
+      }
+    }
+
+    function renderData(data) {
+      const shopOn    = (data.shopStatus || "").toUpperCase() === "ON";
+      const samosaYes = (data.samosaReady || "").toUpperCase() === "YES";
+      const { date, time } = formatTime(data.lastUpdated);
+
+      document.getElementById('content').innerHTML = `
+        <div class="status-row">
+          <div class="status-label">
+            <div class="status-icon">🏪</div>
+            <div>
+              <div class="label-text">Shop Status</div>
+              <div class="label-sub">Open or Closed</div>
+            </div>
+          </div>
+          <span class="badge ${shopOn ? 'green' : 'red'}">
+            <span class="badge-dot"></span>
+            ${shopOn ? 'OPEN' : 'CLOSED'}
+          </span>
+        </div>
+
+        <div class="status-row">
+          <div class="status-label">
+            <div class="status-icon">🥟</div>
+            <div>
+              <div class="label-text">Samosa Ready</div>
+              <div class="label-sub">Fresh batch status</div>
+            </div>
+          </div>
+          <span class="badge ${samosaYes ? 'green' : 'red'}">
+            <span class="badge-dot"></span>
+            ${samosaYes ? 'READY' : 'NOT YET'}
+          </span>
+        </div>
+
+        <div class="status-row">
+          <div class="status-label">
+            <div class="status-icon">🕐</div>
+            <div>
+              <div class="label-text">Last Updated</div>
+              <div class="label-sub">Status timestamp</div>
+            </div>
+          </div>
+          <div class="time-value">
+            ${date}
+            <span>${time}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    loadData();
+    setInterval(loadData, 30000);
+  </script>
+</body>
+</html>

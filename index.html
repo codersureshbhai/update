@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Website</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f9f9f9; color: #222; }
+
+    .hero { text-align: center; padding: 2rem 1rem 1.5rem; }
+
+    /* ---- LOGO ---- */
+    .logo-wrap { margin-bottom: 12px; }
+    .logo-wrap img {
+      width: 100px;        /* size badha ya ghata sakta hai */
+      height: 100px;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+
+    .hero h1 { font-size: 2rem; margin-bottom: 6px; }
+    .hero p { color: #666; }
+
+    nav { display: flex; justify-content: center; gap: 2rem; padding: 1rem 0 1.5rem; border-bottom: 1px solid #ddd; margin-bottom: 2rem; }
+    nav a { text-decoration: none; color: #555; font-size: 15px; }
+    nav a:hover { color: #000; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 0 1.5rem 3rem;
+    }
+
+    .card { background: white; border: 1px solid #e0e0e0; border-radius: 14px; overflow: hidden; }
+
+    .preview-box {
+      height: 360px;
+      overflow: hidden;
+      border-bottom: 1px solid #eee;
+    }
+    .preview-box iframe {
+      width: 180%;
+      height: 180%;
+      transform: scale(0.555);
+      transform-origin: top left;
+      border: none;
+      pointer-events: none;
+    }
+
+    .card-body { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-size: 15px; font-weight: 600; }
+    .card-btn { padding: 6px 16px; border: 1px solid #ccc; border-radius: 8px; font-size: 13px; text-decoration: none; color: #333; }
+    .card-btn:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+
+    <!-- LOGO — yahan apni image ka naam daal -->
+    <div class="logo-wrap">
+      <img src="logo.jpg" alt="Logo" />
+    </div>
+
+    <h1>Apna Dhaabiya</h1>
+    <p>Sabhi pages ka live preview</p>
+  </div>
+
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="preview-box">
+        <iframe src="genral.html"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="card-title">Hello Page</div>
+        <a href="genral.html" class="card-btn">Open →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="preview-box">
+        <iframe src="samosa.html"></iframe>
+      </div>
+      <div class="card-body">
+        <div class="card-title">About Page</div>
+        <a href="samosa.html" class="card-btn">Open →</a>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
